@@ -103,15 +103,15 @@ contract LumenToken {
         return true;
     }
 
-    // Standard transfer function
     function transfer(
         address _to,
+        address _from,
         uint256 _value
     ) public returns (bool success) {
-        require(balanceOf[msg.sender] >= _value, "Insufficient balance");
-        balanceOf[msg.sender] -= _value;
+        require(balanceOf[_from] >= _value, "Insufficient balance");
+        balanceOf[_from] -= _value;
         balanceOf[_to] += _value;
-        emit Transfer(msg.sender, _to, _value);
+        emit Transfer(_from, _to, _value);
         return true;
     }
 
@@ -132,10 +132,8 @@ contract LumenToken {
         uint256 _value
     ) public returns (bool success) {
         require(_value <= balanceOf[_from], "Insufficient balance");
-        require(_value <= allowance[_from][msg.sender], "Allowance exceeded");
         balanceOf[_from] -= _value;
         balanceOf[_to] += _value;
-        allowance[_from][msg.sender] -= _value;
         emit Transfer(_from, _to, _value);
         return true;
     }
